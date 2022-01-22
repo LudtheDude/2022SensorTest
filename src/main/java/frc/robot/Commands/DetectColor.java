@@ -22,8 +22,9 @@ public class DetectColor extends Command{
 	@Override
 	protected void initialize(){
 		//target = Robot.colorSensor.kBlueBall; //use depending on the color ball we want
-//target = Robot.colorSensor.kRedBall;
-		
+		//target = Robot.colorSensor.kRedBall;
+		System.out.println("initialize");
+
 	}
 
 	@Override
