@@ -14,18 +14,19 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import frc.robot.RobotMap;
+import frc.robot.Commands.driveAlign;
 
 /** Add your docs here. */
 public class Drive extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   public static CANSparkMax shooterMotor = new CANSparkMax(RobotMap.shooterMotorPort, MotorType.kBrushless);
-	public static DutyCycleEncoder shooterEncoder = new DutyCycleEncoder(RobotMap.dcEncoder);
-	public static DoubleSolenoid shooterPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, RobotMap.shooterPistonForwardPort, RobotMap.shooterPistonBackwardPort);
-	public static double windDistance; // distance to wind string
-	public static double distance;
-	public static double lowerBound;
-	public static double upperBound;
+	//public static DutyCycleEncoder shooterEncoder = new DutyCycleEncoder(RobotMap.dcEncoder);
+	//public static DoubleSolenoid shooterPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, RobotMap.shooterPistonForwardPort, RobotMap.shooterPistonBackwardPort);
+	//public static double windDistance; // distance to wind string
+	public static double distance = 20.0;
+	public static double lowerBound = 2;
+	public static double upperBound = 5;
 	public static Limelight limelight;
 
 	//import from drivetrain
@@ -37,19 +38,19 @@ public class Drive extends Subsystem {
 	public static AnalogGyro gyro = new AnalogGyro(RobotMap.gyroPort); 
 
 	 //PID fields
-	 public final static double Kp1 = 0.01;
-	 public final static double Ki1 = 0.0;
-	 public final static double Kd1 = 0.0;
-	 //public double distance, left_speed, right_speed;
-	 public double left_speed1, right_speed1;
-	 static double min_error1 = 0.1; //sets an error deadband/ minimum value
-	 static double min_command1 = 0.0;
-	 static double current_error1 = 0; 
-	 static double previous_error1 = 0;
-	 static double integral1 = 0;
-	 static double derivative1 = 0;
-	 static double adjust1 = 0;
-	 static double time1 = 0.1; // 0.1 seconds = 100 milliseconds 
+	//  public final static double Kp1 = 0.01;
+	//  public final static double Ki1 = 0.0;
+	//  public final static double Kd1 = 0.0;
+	//  //public double distance, left_speed, right_speed;
+	//  public double left_speed1, right_speed1;
+	//  static double min_error1 = 0.1; //sets an error deadband/ minimum value
+	//  static double min_command1 = 0.0;
+	//  static double current_error1 = 0; 
+	//  static double previous_error1 = 0;
+	//  static double integral1 = 0;
+	//  static double derivative1 = 0;
+	//  static double adjust1 = 0;
+	//  static double time1 = 0.1; // 0.1 seconds = 100 milliseconds 
 	 
 	 public final static double Kp2 = 0.01;
 	 public final static double Ki2 = 0.0;
@@ -67,7 +68,10 @@ public class Drive extends Subsystem {
 
   	public Drive(){
 	}
-
+// this is a really cool code. please don't kill the robot. - Kathryn Le (2004-infinity)
+// this is a concise code. Kathryn will make it shorter soon. Please stand by. - pi 
+// is this like a google doc where you can make comments and resolve them? - Jillian, Co-Head of Programming of the Fe Maidens
+// 
 	public void stopDrive(){
 		frontLeft.set(0.0);
 		rearLeft.set(0.0);
@@ -125,11 +129,13 @@ public class Drive extends Subsystem {
 				rearRight.set(adjust2);
 			}
 		}
+		stopDrive();
 	}
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+	setDefaultCommand(new driveAlign());
   }
 }
