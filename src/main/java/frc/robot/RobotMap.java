@@ -7,6 +7,10 @@ package frc.robot;
 /** Add your docs here. */
 public class RobotMap {
 
+	public static int encoderPort1 = 0;
+	public static int encoderPort2 = 1;
+	public static int motorPort = 3;
+
     public RobotMap(){
 	}
 

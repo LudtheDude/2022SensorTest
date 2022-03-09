@@ -16,7 +16,6 @@ public class OI{
 	public static Button color = new JoystickButton(driveJoy, 3);
 
 	public void bindButtons(){
-		color.whileHeld(new DetectColor()); 
 	}
 }
 
