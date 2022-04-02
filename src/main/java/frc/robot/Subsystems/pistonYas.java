@@ -6,6 +6,7 @@ package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
@@ -14,7 +15,7 @@ public class pistonYas extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  public static DoubleSolenoid piston1 = new DoubleSolenoid(RobotMap.climbPcmPort, RobotMap.climbFrontPort1, RobotMap.climbFrontPort2);
+  public static DoubleSolenoid piston1 = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, RobotMap.pistonPort1, RobotMap.pistonPort2);
 
   public static void extendPiston(){
     piston1.set(DoubleSolenoid.Value.kForward);

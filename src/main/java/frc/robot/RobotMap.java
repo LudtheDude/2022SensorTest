@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+
 /** Add your docs here. */
 public class RobotMap {
 
@@ -11,5 +13,8 @@ public class RobotMap {
 	}
 
 	public static int driveJoyPort = 0;
+
+	public static int pistonPort1 = 0;
+	public static int pistonPort2 = 0;
 
 }
