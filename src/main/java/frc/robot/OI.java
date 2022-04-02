@@ -15,8 +15,12 @@ public class OI{
 	public static Joystick driveJoy = new Joystick(RobotMap.driveJoyPort);
 	public static Button color = new JoystickButton(driveJoy, 3);
 
+	public static Button extendPisButton = new JoystickButton(driveJoy, 1);
+	public static Button retractPisButton = new JoystickButton(driveJoy, 0);
+
 	public void bindButtons(){
-		color.whileHeld(new DetectColor()); 
+		extendPisButton.whenPressed(new pistonExtend());
+		retractPisButton.whenPressed(new pistonRetract());
 	}
 }
 
