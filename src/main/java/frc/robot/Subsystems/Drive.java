@@ -7,10 +7,6 @@ package frc.robot.Subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import frc.robot.RobotMap;
@@ -20,7 +16,7 @@ import frc.robot.Commands.driveAlign;
 public class Drive extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  public static CANSparkMax shooterMotor = new CANSparkMax(RobotMap.shooterMotorPort, MotorType.kBrushless);
+  //public static CANSparkMax shooterMotor = new CANSparkMax(RobotMap.shooterMotorPort, MotorType.kBrushless);
 	//public static DutyCycleEncoder shooterEncoder = new DutyCycleEncoder(RobotMap.dcEncoder);
 	//public static DoubleSolenoid shooterPiston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, RobotMap.shooterPistonForwardPort, RobotMap.shooterPistonBackwardPort);
 	//public static double windDistance; // distance to wind string
@@ -34,8 +30,10 @@ public class Drive extends Subsystem {
 	public static CANSparkMax rearRight = new CANSparkMax(RobotMap.rearRightPort, MotorType.kBrushless);
 	public static CANSparkMax frontLeft = new CANSparkMax(RobotMap.frontLeftPort, MotorType.kBrushless);
 	public static CANSparkMax rearLeft = new CANSparkMax(RobotMap.rearLeftPort, MotorType.kBrushless);
-	public static MecanumDrive mecanum = new MecanumDrive(frontLeft, rearLeft, frontRight, rearRight);
-	public static AnalogGyro gyro = new AnalogGyro(RobotMap.gyroPort); 
+	public static CANSparkMax midRight = new CANSparkMax(RobotMap.midRightPort, MotorType.kBrushless);
+	public static CANSparkMax midLeft = new CANSparkMax(RobotMap.midLeftPort, MotorType.kBrushless);
+	//public static MecanumDrive mecanum = new MecanumDrive(frontLeft, rearLeft, frontRight, rearRight);
+	//public static AnalogGyro gyro = new AnalogGyro(RobotMap.gyroPort); 
 
 	 //PID fields
 	//  public final static double Kp1 = 0.01;
@@ -52,7 +50,7 @@ public class Drive extends Subsystem {
 	//  static double adjust1 = 0;
 	//  static double time1 = 0.1; // 0.1 seconds = 100 milliseconds 
 	 
-	 public final static double Kp2 = 0.01;
+	 public final static double Kp2 = 0.1;
 	 public final static double Ki2 = 0.0;
 	 public final static double Kd2 = 0.0;
 	 //public double distance, left_speed, right_speed;
@@ -79,8 +77,17 @@ public class Drive extends Subsystem {
 		rearRight.set(0.0);
 	}
 
+	public void driveStraight(double speed, double adjust){
+		frontRight.set(-1*(speed - adjust*0.01));
+		midRight.set(-1*(speed - adjust*0.01));
+		rearRight.set(-1*(speed - adjust*0.01));
+		frontLeft.set(speed + adjust*0.01);
+		midLeft.set(speed + adjust*0.01);
+		rearLeft.set(speed + adjust*0.01);
+	  }
+
 	public void alignDrive(){
-		while(Limelight.getDistance() != distance){
+		//while(Limelight.getDistance() != distance){
 			// previous_error1 = current_error1;
 			// current_error1 = distance - Limelight.getDistance();
 			// integral1 = (current_error1+previous_error1)/2*(time1);
@@ -101,10 +108,10 @@ public class Drive extends Subsystem {
 			// else if (Limelight.getDistance() < distance){
 			// 	mecanum.driveCartesian(0, 0.3 - adjust1, 0);
 			// }
-		}
-		while(gyro.getAngle() - Limelight.getTX() < lowerBound || gyro.getAngle() - Limelight.getTX() > upperBound){
+		//}
+		while(Limelight.getTX() != 0){
 			previous_error2 = current_error2;
-			current_error2 = gyro.getAngle() - Limelight.getTX();
+			current_error2 = Limelight.getTX();
 			integral2 = (current_error2+previous_error2)/2*(time2);
 			derivative2 = (current_error2-previous_error2)/time2;
 			adjust2 = Kp2*current_error2 + Ki2*integral2 + Kd2*derivative2;
@@ -116,18 +123,7 @@ public class Drive extends Subsystem {
 			  adjust2 -= min_command2;
 			}
 
-			if (gyro.getAngle() - Limelight.getTX() < lowerBound){
-				frontLeft.set(adjust2);
-				rearLeft.set(adjust2);
-				frontRight.set(-1*adjust2);
-				rearRight.set(-1*adjust2);
-			}
-			else if (gyro.getAngle() - Limelight.getTX() > upperBound){
-				frontLeft.set(-1*adjust2);
-				rearLeft.set(-1*adjust2);
-				frontRight.set(adjust2);
-				rearRight.set(adjust2);
-			}
+			driveStraight(.1, adjust2);
 		}
 		stopDrive();
 	}

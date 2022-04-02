@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.Drive;
+import frc.robot.Subsystems.Limelight;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 /**
@@ -23,6 +24,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static OI m_oi;
   public static Drive drivetrain;
+  public static Limelight limelight;
   
 
   /**
@@ -34,9 +36,11 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    drivetrain = new Drive();
+    limelight = new Limelight();
     m_oi = new OI();
     m_oi.bindButtons();
-    drivetrain = new Drive();
+    
 
   }
 
